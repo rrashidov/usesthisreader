@@ -27,6 +27,8 @@ func (r SimpleUsesThisReader) Run() error {
 	}
 
 	if latest_local != latest_remote {
+		r.local.Update(latest_remote)
+
 		return r.notif.Notify()
 	}
 
