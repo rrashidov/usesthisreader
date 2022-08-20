@@ -19,6 +19,12 @@ type PeriodicScheduler struct {
 	period int
 }
 
+func NewPeriodicScheduler(period int) *PeriodicScheduler {
+	return &PeriodicScheduler{
+		period: period,
+	}
+}
+
 func (pr PeriodicScheduler) Schedule(exec generic.GenericLogic) error {
 
 	if exec == nil {

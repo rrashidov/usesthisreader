@@ -16,6 +16,13 @@ type Application struct {
 	r usesthisreader.UsesThisReader
 }
 
+func NewApplication(s scheduler.Scheduler, r usesthisreader.UsesThisReader) *Application {
+	return &Application{
+		s: s,
+		r: r,
+	}
+}
+
 func (app Application) Run() error {
 	if app.s == nil {
 		return SchedulerNotProvidedError

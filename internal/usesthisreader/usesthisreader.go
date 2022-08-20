@@ -12,6 +12,10 @@ type SimpleUsesThisReader struct {
 	notif  notification.NotificationClient
 }
 
+func NewUsesThisReader(url string, filepath string) *SimpleUsesThisReader {
+	return nil
+}
+
 func (r SimpleUsesThisReader) Run() error {
 
 	latest_remote, err := r.remote.GetLatest()
