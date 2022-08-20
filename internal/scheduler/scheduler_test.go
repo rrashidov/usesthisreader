@@ -1,28 +1,25 @@
 package scheduler
 
 import (
-	"rrashidov/usesthisreader/internal/generic"
 	"testing"
 	"time"
 )
 
 func TestPeriodicScheduler(t *testing.T) {
 
-	exec := &TestLogic{}
-
 	tests := []struct {
 		name                       string
-		exec                       generic.GenericLogic
+		pass_exec                  bool
 		period                     int
 		wait_before_check          int
 		expectedEror               error
 		expectedNumberOfExecutions int
 	}{
-		{"Null exec", nil, 0, 0, ErrProvidedExecIsNil, 0},
-		{"Non-positive period", exec, 0, 0, ErrPeriodShouldBePositive, 0},
-		{"Big period", exec, 10000, 0, nil, 0},
-		{"Normal period, one execution", exec, 10, 15, nil, 1},
-		{"Smaller period, two executions", exec, 10, 25, nil, 2},
+		{"Null exec", false, 0, 0, ErrProvidedExecIsNil, 0},
+		{"Non-positive period", true, 0, 0, ErrPeriodShouldBePositive, 0},
+		{"Big period", true, 10000, 0, nil, 0},
+		{"Normal period one execution", true, 10, 15, nil, 1},
+		{"Smaller period two executions", true, 10, 25, nil, 2},
 	}
 
 	for _, tt := range tests {
@@ -31,7 +28,15 @@ func TestPeriodicScheduler(t *testing.T) {
 				period: tt.period,
 			}
 
-			err := s.Schedule(tt.exec)
+			exec := &TestLogic{}
+
+			var err error
+
+			if tt.pass_exec {
+				err = s.Schedule(exec)
+			} else {
+				err = s.Schedule(nil)
+			}
 
 			if err != tt.expectedEror {
 				t.Errorf("Scheduler did not return proper error: expected %q, got: %q", tt.expectedEror, err)
@@ -39,7 +44,7 @@ func TestPeriodicScheduler(t *testing.T) {
 
 			time.Sleep(time.Duration(tt.wait_before_check) * time.Millisecond)
 
-			if tt.expectedNumberOfExecutions < exec.execCount {
+			if exec.execCount < tt.expectedNumberOfExecutions {
 				t.Errorf("Scheduler did not execute provided logic; expected: %d, got: %d", tt.expectedNumberOfExecutions, exec.execCount)
 			}
 		})

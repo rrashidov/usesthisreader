@@ -30,9 +30,11 @@ func (pr PeriodicScheduler) Schedule(exec generic.GenericLogic) error {
 	}
 
 	go func() {
-		time.Sleep(time.Duration(pr.period) * time.Millisecond)
+		for {
+			time.Sleep(time.Duration(pr.period) * time.Millisecond)
 
-		exec.Run()
+			exec.Run()
+		}
 	}()
 
 	return nil
