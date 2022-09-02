@@ -8,8 +8,9 @@ import (
 )
 
 const (
-	ExecutionPeriod int    = 60 * 60 * 1000
-	URL             string = ""
+	ExecutionPeriod             int    = 60 * 60 * 1000
+	URL                         string = ""
+	LocalStorageDefaultFilePath string = ".usesthisreader"
 )
 
 func main() {
@@ -30,7 +31,7 @@ func init_application() (*app.Application, error) {
 	sched := scheduler.NewPeriodicScheduler(ExecutionPeriod)
 
 	// TODO: pass uses this API url
-	reader := usesthisreader.NewUsesThisReader("", ".usesthisreader")
+	reader := usesthisreader.NewUsesThisReader("", LocalStorageDefaultFilePath)
 
 	return app.NewApplication(sched, reader), nil
 }
