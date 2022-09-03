@@ -12,8 +12,26 @@ type SimpleUsesThisReader struct {
 	notif  notification.NotificationClient
 }
 
-func NewUsesThisReader(url string, filepath string) *SimpleUsesThisReader {
-	return nil
+func NewUsesThisReader(url string, filepath string, region string, recipient string, sender string) *SimpleUsesThisReader {
+	remote := &RemoteUsesThisClient{
+		url: url,
+	}
+
+	local := &LocalUsesThisClient{
+		filepath: filepath,
+	}
+
+	notif := &notification.AWSSESNotificationClient{
+		Region:    region,
+		Recipient: recipient,
+		Sender:    sender,
+	}
+
+	return &SimpleUsesThisReader{
+		remote: remote,
+		local:  local,
+		notif:  notif,
+	}
 }
 
 func (r SimpleUsesThisReader) Run() error {
