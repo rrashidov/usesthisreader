@@ -13,8 +13,6 @@ const (
 	DefaultURL                  string = ""
 	DefaultLocalStorageFilePath string = ".usesthisreader"
 	DefaultAWSRegion            string = "us-east-1"
-	Recipient                   string = ""
-	Sender                      string = ""
 )
 
 type app_cfg struct {
@@ -22,6 +20,8 @@ type app_cfg struct {
 	url                string
 	local_storage_path string
 	aws_region         string
+	recipient          string
+	sender             string
 }
 
 func main() {
@@ -31,6 +31,8 @@ func main() {
 	flag.StringVar(&cfg.url, "url", DefaultURL, "API URL")
 	flag.StringVar(&cfg.local_storage_path, "local-storage-path", DefaultLocalStorageFilePath, "Local storage path")
 	flag.StringVar(&cfg.aws_region, "aws-region", DefaultAWSRegion, "AWS Region")
+	flag.StringVar(&cfg.recipient, "recipient", "", "Mail notification recipient")
+	flag.StringVar(&cfg.sender, "sender", "", "Mail notification sender")
 
 	flag.Parse()
 
@@ -54,10 +56,10 @@ func init_application(cfg app_cfg) (*app.Application, error) {
 
 	reader := usesthisreader.NewUsesThisReader(
 		cfg.url,
-		LocalStorageDefaultFilePath,
+		cfg.local_storage_path,
 		cfg.aws_region,
-		Recipient,
-		Sender)
+		cfg.recipient,
+		cfg.sender)
 
 	return app.NewApplication(sched, reader), nil
 }
@@ -67,4 +69,6 @@ func print_application_config(cfg app_cfg) {
 	fmt.Printf("execution period: %d", cfg.exec_period)
 	fmt.Printf("API url: %q", cfg.url)
 	fmt.Printf("AWS region: %q", cfg.aws_region)
+	fmt.Printf("Recipient: %q", cfg.recipient)
+	fmt.Printf("Sender: %q", cfg.sender)
 }
