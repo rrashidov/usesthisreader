@@ -1,6 +1,7 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"rrashidov/usesthisreader/internal/app"
 	"rrashidov/usesthisreader/internal/scheduler"
@@ -8,7 +9,7 @@ import (
 )
 
 const (
-	ExecutionPeriod             int    = 60 * 60 * 1000
+	DefaultExecutionPeriod      int    = 60 * 60 * 1000
 	URL                         string = ""
 	LocalStorageDefaultFilePath string = ".usesthisreader"
 	AWSRegion                   string = ""
@@ -16,8 +17,16 @@ const (
 	Sender                      string = ""
 )
 
+type app_cfg struct {
+	exec_period int
+}
+
 func main() {
-	app, err := init_application()
+	var cfg app_cfg
+
+	flag.IntVar(&cfg.exec_period, "execPeriod", DefaultExecutionPeriod, "Execution period")
+
+	app, err := init_application(cfg)
 
 	if err != nil {
 		fmt.Println("Error initializing the application: " + err.Error())
@@ -30,8 +39,8 @@ func main() {
 	}
 }
 
-func init_application() (*app.Application, error) {
-	sched := scheduler.NewPeriodicScheduler(ExecutionPeriod)
+func init_application(cfg app_cfg) (*app.Application, error) {
+	sched := scheduler.NewPeriodicScheduler(cfg.exec_period)
 
 	reader := usesthisreader.NewUsesThisReader("", LocalStorageDefaultFilePath, AWSRegion, Recipient, Sender)
 
