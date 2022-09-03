@@ -26,6 +26,10 @@ func main() {
 
 	flag.IntVar(&cfg.exec_period, "execPeriod", DefaultExecutionPeriod, "Execution period")
 
+	flag.Parse()
+
+	print_application_config(cfg)
+
 	app, err := init_application(cfg)
 
 	if err != nil {
@@ -45,4 +49,9 @@ func init_application(cfg app_cfg) (*app.Application, error) {
 	reader := usesthisreader.NewUsesThisReader("", LocalStorageDefaultFilePath, AWSRegion, Recipient, Sender)
 
 	return app.NewApplication(sched, reader), nil
+}
+
+func print_application_config(cfg app_cfg) {
+	fmt.Printf("Starting application with the following config:")
+	fmt.Printf("execution period: %d", cfg.exec_period)
 }
