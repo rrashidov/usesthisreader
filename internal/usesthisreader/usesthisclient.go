@@ -59,7 +59,7 @@ func (l RemoteUsesThisClient) GetLatest() (string, error) {
 		return "", nil
 	}
 
-	for i, _ := range jsonObject.Interviews {
+	for i := range jsonObject.Interviews {
 		return jsonObject.Interviews[i].Slug, nil
 	}
 
