@@ -11,15 +11,17 @@ import (
 const (
 	DefaultExecutionPeriod      int    = 60 * 60 * 1000
 	DefaultURL                  string = ""
-	LocalStorageDefaultFilePath string = ".usesthisreader"
-	AWSRegion                   string = ""
+	DefaultLocalStorageFilePath string = ".usesthisreader"
+	DefaultAWSRegion            string = "us-east-1"
 	Recipient                   string = ""
 	Sender                      string = ""
 )
 
 type app_cfg struct {
-	exec_period int
-	url         string
+	exec_period        int
+	url                string
+	local_storage_path string
+	aws_region         string
 }
 
 func main() {
@@ -27,6 +29,8 @@ func main() {
 
 	flag.IntVar(&cfg.exec_period, "execPeriod", DefaultExecutionPeriod, "Execution period")
 	flag.StringVar(&cfg.url, "url", DefaultURL, "API URL")
+	flag.StringVar(&cfg.local_storage_path, "local-storage-path", DefaultLocalStorageFilePath, "Local storage path")
+	flag.StringVar(&cfg.aws_region, "aws-region", DefaultAWSRegion, "AWS Region")
 
 	flag.Parse()
 
@@ -48,7 +52,12 @@ func main() {
 func init_application(cfg app_cfg) (*app.Application, error) {
 	sched := scheduler.NewPeriodicScheduler(cfg.exec_period)
 
-	reader := usesthisreader.NewUsesThisReader(cfg.url, LocalStorageDefaultFilePath, AWSRegion, Recipient, Sender)
+	reader := usesthisreader.NewUsesThisReader(
+		cfg.url,
+		LocalStorageDefaultFilePath,
+		cfg.aws_region,
+		Recipient,
+		Sender)
 
 	return app.NewApplication(sched, reader), nil
 }
@@ -57,4 +66,5 @@ func print_application_config(cfg app_cfg) {
 	fmt.Printf("Starting application with the following config:")
 	fmt.Printf("execution period: %d", cfg.exec_period)
 	fmt.Printf("API url: %q", cfg.url)
+	fmt.Printf("AWS region: %q", cfg.aws_region)
 }
