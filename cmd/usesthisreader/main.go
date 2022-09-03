@@ -56,4 +56,5 @@ func init_application(cfg app_cfg) (*app.Application, error) {
 func print_application_config(cfg app_cfg) {
 	fmt.Printf("Starting application with the following config:")
 	fmt.Printf("execution period: %d", cfg.exec_period)
+	fmt.Printf("API url: %q", cfg.url)
 }
