@@ -2,6 +2,7 @@ package usesthisreader
 
 import (
 	"encoding/json"
+	"errors"
 	"io"
 	"net/http"
 	"os"
@@ -17,6 +18,14 @@ type LocalUsesThisClient struct {
 }
 
 func (l LocalUsesThisClient) GetLatest() (string, error) {
+	if _, err := os.Stat(l.filepath); errors.Is(err, os.ErrNotExist) {
+		// file does not exist; create it
+		_, err = os.Create(l.filepath)
+		if err != nil {
+			return "", err
+		}
+	}
+
 	dat, err := os.ReadFile(l.filepath)
 
 	return string(dat), err
