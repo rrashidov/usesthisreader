@@ -60,13 +60,13 @@ func (r SimpleUsesThisReader) Run() error {
 	fmt.Printf("Latest local interview: %q\n", latest_local)
 
 	if latest_local != latest_remote {
-		fmt.Printf("New remote interview found. Notify")
+		fmt.Println("New remote interview found. Notify")
 
 		r.local.Update(latest_remote)
 
 		return r.notif.Notify()
 	} else {
-		fmt.Printf("No new interview found")
+		fmt.Println("No new interview found")
 	}
 
 	return nil
