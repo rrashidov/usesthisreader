@@ -35,13 +35,9 @@ func (pr PeriodicScheduler) Schedule(exec generic.GenericLogic) error {
 		return ErrPeriodShouldBePositive
 	}
 
-	go func() {
-		for {
-			time.Sleep(time.Duration(pr.period) * time.Millisecond)
+	for {
+		time.Sleep(time.Duration(pr.period) * time.Millisecond)
 
-			exec.Run()
-		}
-	}()
-
-	return nil
+		exec.Run()
+	}
 }

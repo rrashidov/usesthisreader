@@ -32,11 +32,15 @@ func TestPeriodicScheduler(t *testing.T) {
 
 			var err error
 
-			if tt.pass_exec {
-				err = s.Schedule(exec)
-			} else {
-				err = s.Schedule(nil)
-			}
+			go func() {
+				if tt.pass_exec {
+					err = s.Schedule(exec)
+				} else {
+					err = s.Schedule(nil)
+				}
+			}()
+
+			time.Sleep(3 * time.Second)
 
 			if err != tt.expectedEror {
 				t.Errorf("Scheduler did not return proper error: expected %q, got: %q", tt.expectedEror, err)
