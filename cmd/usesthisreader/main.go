@@ -10,7 +10,7 @@ import (
 
 const (
 	DefaultExecutionPeriod      int    = 60 * 60 * 1000
-	DefaultURL                  string = ""
+	DefaultURL                  string = "https://usesthis.com/api/interviews/"
 	DefaultLocalStorageFilePath string = ".usesthisreader"
 	DefaultAWSRegion            string = "us-east-1"
 )
