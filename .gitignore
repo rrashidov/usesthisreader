@@ -16,3 +16,6 @@
 
 # Folder where binaries are built it
 bin/
+
+# File containing environment variables
+.envrc
