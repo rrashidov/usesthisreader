@@ -1,9 +1,16 @@
-FROM bash:5.1
+FROM ubuntu:latest
+RUN useradd usesthisreader
 
-COPY ./cmd/usesthisreader/usesthisreader /usesthisreader
+FROM alpine:3.16.2
 
-COPY entrypoint.sh entrypoint.sh
+COPY ./bin/linux_arm/usesthisreader /home/usesthisreader/usesthisreader
+COPY ./docker/entrypoint.sh /home/usesthisreader/entrypoint.sh
+RUN chmod a+x /home/usesthisreader/entrypoint.sh
 
-RUN chmod a+x /entrypoint.sh
+COPY --from=0 /etc/passwd /etc/passwd
 
-CMD ["./entrypoint.sh"]
+USER usesthisreader
+
+WORKDIR /home/usesthisreader/
+
+CMD ["/home/usesthisreader/entrypoint.sh"]
