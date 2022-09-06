@@ -40,3 +40,8 @@ build: audit
 	@echo 'Building cmd/usesthisreader...'
 	go build -o=./bin/usesthisreader ./cmd/usesthisreader
 	GOOS=linux GOARCH=arm go build -o=./bin/linux_arm/usesthisreader ./cmd/usesthisreader
+
+## docker: builds container image
+.PHONY: docker
+docker: build
+	docker build -f ./docker/Dockerfile -t utr:0.0.1 .
