@@ -1,3 +1,6 @@
+# Include variables from the .envrc file
+include .envrc
+
 # ================================================================================ #
 # HELPERS
 # ================================================================================ #
@@ -45,3 +48,12 @@ build: audit
 .PHONY: docker
 docker: build
 	docker build -f ./docker/Dockerfile -t utr:0.0.1 .
+
+# ================================================================================ #
+# RUN
+# ================================================================================ #
+
+## run: runs the application as a docker container locally
+.PHONY: run
+run: docker
+	docker run -d -v ${LOCAL_STORAGE_MOUNT_PATH}:/home/usesthisreader/.aws/ -e EXEC_PERIOD=${EXEC_PERIOD} -e RECIPIENT=${RECIPIENT} -e SENDER=${SENDER} -e LOCAL_STORAGE_PATH=${LOCAL_STORAGE_PATH} utr:0.0.1
