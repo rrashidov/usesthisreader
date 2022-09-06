@@ -1,0 +1,5 @@
+export LOCAL_STORAGE_MOUNT_PATH=
+export LOCAL_STORAGE_PATH=
+export EXEC_PERIOD=
+export RECIPIENT=
+export SENDER=
