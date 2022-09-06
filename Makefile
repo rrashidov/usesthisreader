@@ -29,3 +29,14 @@ vendor:
 	go mod verify
 	@echo 'Vendoring dependencies...'
 	go mod vendor
+
+# ====================================================================================     #
+# BUILD
+# ====================================================================================     #
+
+## build: builds the usesthisreader binary
+.PHONY: build
+build: audit
+	@echo 'Building cmd/usesthisreader...'
+	go build -o=./bin/usesthisreader ./cmd/usesthisreader
+	GOOS=linux GOARCH=arm go build -o=./bin/linux_arm/usesthisreader ./cmd/usesthisreader
