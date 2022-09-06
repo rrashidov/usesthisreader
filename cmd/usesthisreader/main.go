@@ -65,10 +65,10 @@ func init_application(cfg app_cfg) (*app.Application, error) {
 }
 
 func print_application_config(cfg app_cfg) {
-	fmt.Printf("Starting application with the following config:")
-	fmt.Printf("execution period: %d", cfg.exec_period)
-	fmt.Printf("API url: %q", cfg.url)
-	fmt.Printf("AWS region: %q", cfg.aws_region)
-	fmt.Printf("Recipient: %q", cfg.recipient)
-	fmt.Printf("Sender: %q", cfg.sender)
+	fmt.Printf("Starting application with the following config:\n")
+	fmt.Printf("execution period: %d\n", cfg.exec_period)
+	fmt.Printf("API url: %q\n", cfg.url)
+	fmt.Printf("AWS region: %q\n", cfg.aws_region)
+	fmt.Printf("Recipient: %q\n", cfg.recipient)
+	fmt.Printf("Sender: %q\n", cfg.sender)
 }
